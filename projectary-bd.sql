@@ -1,4 +1,4 @@
--- Mysql
+-- MySQL dump
 
 SET NAMES utf8;
 SET foreign_key_checks = 0;
@@ -8,16 +8,15 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 DELIMITER ;;
 
 DROP PROCEDURE IF EXISTS `InsertNewEntity`;;
-CREATE DEFINER=`root`@`192.168.122.%` PROCEDURE `InsertNewEntity`(IN name VARCHAR(255),type INT,studentid VARCHAR(255),teacherid VARCHAR(255))
+CREATE DEFINER=`root`@`192.168.122.%` PROCEDURE `InsertNewEntity`(IN `name`      VARCHAR(255), IN `type` INT(11), IN `studentid` VARCHAR(255),
+                                   IN `teacherid` VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
  SELECT UUID() INTO UUID;
  Insert INTO entity VALUES (UUID,name,NOW());
-CASE type
-WHEN type=1
-THEN INSERT INTO student VALUES(UUID,studentid);
-  WHEN type=2
-THEN INSERT INTO teacher VALUES(UUID,teacherid);
+CASE
+WHEN type=1 THEN INSERT INTO student VALUES(UUID,studentid);
+WHEN type=2 THEN INSERT INTO teacher VALUES(UUID,teacherid);
 END CASE;
 END;;
 
@@ -216,4 +215,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
--- 2017-03-07 16:23:55
+-- 2017-03-08 15:31:01
