@@ -165,6 +165,7 @@ CREATE TABLE `projectrevlogdoc` (
   `projectrevlog` varchar(255) COLLATE utf8_bin NOT NULL,
   `doc` longblob,
   `url` longtext COLLATE utf8_bin,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `projectrevlogdoc_prjrevlog_fk` (`projectrevlog`),
   CONSTRAINT `projectrevlogdoc_prjrevlog_fk` FOREIGN KEY (`projectrevlog`) REFERENCES `projectrevlog` (`id`)
@@ -249,4 +250,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
--- 2017-03-10 09:34:02
+-- 2017-03-10 09:38:55
