@@ -116,8 +116,12 @@ CREATE TABLE `projectrev` (
   `project` varchar(255) COLLATE utf8_bin NOT NULL,
   `start` date NOT NULL,
   `end` date NOT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `projectrev_proj_fk` (`project`),
+  KEY `projectrev_entity_fk` (`createdby`),
+  CONSTRAINT `projectrev_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
   CONSTRAINT `projectrev_proj_fk` FOREIGN KEY (`project`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -127,13 +131,43 @@ CREATE TABLE `projectreventity` (
   `projectrev` varchar(255) COLLATE utf8_bin NOT NULL,
   `entity` varchar(255) COLLATE utf8_bin NOT NULL,
   `function` varchar(255) COLLATE utf8_bin NOT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`projectrev`,`entity`,`function`),
-  KEY `projectreventity_entity_fk` (`entity`),
   KEY `projectreventity_function_fk` (`function`),
   KEY `projectreventity_project_index` (`projectrev`),
+  KEY `projectreventity_entity2_fk` (`entity`),
+  CONSTRAINT `projectreventity_entity2_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`),
   CONSTRAINT `projectreventity_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`),
   CONSTRAINT `projectreventity_function_fk` FOREIGN KEY (`function`) REFERENCES `function` (`id`),
   CONSTRAINT `projectreventity_projrev_fk` FOREIGN KEY (`projectrev`) REFERENCES `projectrev` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+DROP TABLE IF EXISTS `projectrevlog`;
+CREATE TABLE `projectrevlog` (
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `project` varchar(255) COLLATE utf8_bin NOT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
+  `desc` longtext COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `projectlogs_projrev_fk` (`project`),
+  KEY `projectlogs_entity_fk` (`createdby`),
+  CONSTRAINT `projectlogs_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `projectlogs_projrev_fk` FOREIGN KEY (`project`) REFERENCES `projectrev` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+DROP TABLE IF EXISTS `projectrevlogdoc`;
+CREATE TABLE `projectrevlogdoc` (
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `projectrevlog` varchar(255) COLLATE utf8_bin NOT NULL,
+  `doc` longblob,
+  `url` longtext COLLATE utf8_bin,
+  PRIMARY KEY (`id`),
+  KEY `projectrevlogdoc_prjrevlog_fk` (`projectrevlog`),
+  CONSTRAINT `projectrevlogdoc_prjrevlog_fk` FOREIGN KEY (`projectrevlog`) REFERENCES `projectrevlog` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
@@ -215,4 +249,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
--- 2017-03-08 15:31:01
+-- 2017-03-10 09:34:02
