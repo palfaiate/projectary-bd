@@ -20,6 +20,15 @@ WHEN type=2 THEN INSERT INTO teacher VALUES(UUID,teacherid);
 END CASE;
 END;;
 
+DROP PROCEDURE IF EXISTS `ListEntities`;;
+CREATE DEFINER=`root`@`192.168.122.%` PROCEDURE `ListEntities`(IN `type` INT(11), IN `studentid` VARCHAR(255),IN `teacheris` VARCHAR(255),IN id VARCHAR(255))
+BEGIN
+CASE
+WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where (e.id=s.id and s.studentid like CONCAT(CONCAT('%',@studentid),'%') OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',@id),'%')));
+WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where (e.id=t.id and t.teacherid like CONCAT(CONCAT('%',@teacherid),'%') OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',@id),'%')));
+END CASE;
+END;;
+
 DELIMITER ;
 
 DROP TABLE IF EXISTS `admin`;
@@ -250,4 +259,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
--- 2017-03-10 09:38:55
+-- 2017-03-10 17:13:03
