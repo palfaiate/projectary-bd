@@ -24,8 +24,8 @@ DROP PROCEDURE IF EXISTS `ListEntities`;;
 CREATE DEFINER=`root`@`192.168.122.%` PROCEDURE `ListEntities`(IN `type` INT(11), IN `studentid` VARCHAR(255),IN `teacheris` VARCHAR(255),IN id VARCHAR(255))
 BEGIN
 CASE
-WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where (e.id=s.id and s.studentid like CONCAT(CONCAT('%',@studentid),'%') OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',@id),'%')));
-WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where (e.id=t.id and t.teacherid like CONCAT(CONCAT('%',@teacherid),'%') OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',@id),'%')));
+WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where (e.id=s.id and s.studentid like CONCAT(CONCAT('%',studentid),'%') OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',id),'%')));
+WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where (e.id=t.id and t.teacherid like CONCAT(CONCAT('%',teacherid),'%') OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',id),'%')));
 END CASE;
 END;;
 
@@ -87,7 +87,6 @@ CREATE TABLE `entity` (
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 
 DROP TABLE IF EXISTS `function`;
 CREATE TABLE `function` (
@@ -244,7 +243,6 @@ CREATE TABLE `student` (
   CONSTRAINT `student_id_fk` FOREIGN KEY (`id`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
 DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE `teacher` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -271,4 +269,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
--- 2017-03-14 11:46:02
+-- 2017-03-14 16:32:20
