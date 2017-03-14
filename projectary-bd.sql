@@ -8,24 +8,23 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 DELIMITER ;;
 
 DROP PROCEDURE IF EXISTS `InsertNewEntity`;;
-CREATE DEFINER=`root`@`192.168.122.%` PROCEDURE `InsertNewEntity`(IN `name`      VARCHAR(255), IN `type` INT(11), IN `studentid` VARCHAR(255),
-                                   IN `teacherid` VARCHAR(255))
+CREATE PROCEDURE `InsertNewEntity`(IN `name`      VARCHAR(255), IN `type` INT(11), IN `extid` VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
  SELECT UUID() INTO UUID;
  Insert INTO entity VALUES (UUID,name,NOW());
 CASE
-WHEN type=1 THEN INSERT INTO student VALUES(UUID,studentid);
-WHEN type=2 THEN INSERT INTO teacher VALUES(UUID,teacherid);
+WHEN type=1 THEN INSERT INTO student VALUES(UUID,extid);
+WHEN type=2 THEN INSERT INTO teacher VALUES(UUID,extid);
 END CASE;
 END;;
 
 DROP PROCEDURE IF EXISTS `ListEntities`;;
-CREATE DEFINER=`root`@`192.168.122.%` PROCEDURE `ListEntities`(IN `type` INT(11), IN `studentid` VARCHAR(255),IN `teacheris` VARCHAR(255),IN id VARCHAR(255))
+CREATE PROCEDURE `ListEntities`(IN `type` INT(11), IN `extid` VARCHAR(255),IN `fname` VARCHAR(255),IN `lname` VARCHAR(255),IN id VARCHAR(255))
 BEGIN
 CASE
-WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where (e.id=s.id and s.studentid like CONCAT(CONCAT('%',studentid),'%') OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',id),'%')));
-WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where (e.id=t.id and t.teacherid like CONCAT(CONCAT('%',teacherid),'%') OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',id),'%')));
+WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where ((e.id=s.id and s.studentid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
+WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where ((e.id=t.id and t.teacherid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
 END CASE;
 END;;
 
@@ -83,7 +82,8 @@ CREATE TABLE `attribute` (
 DROP TABLE IF EXISTS `entity`;
 CREATE TABLE `entity` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `fname` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `lname` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
