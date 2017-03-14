@@ -181,6 +181,18 @@ CREATE TABLE `projectrevlogdoc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
+DROP TABLE IF EXISTS `projectweb`;
+CREATE TABLE `projectweb` (
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `projectweb_entity_fk` (`createdby`),
+  CONSTRAINT `projectweb_project_fk` FOREIGN KEY (`id`) REFERENCES `project` (`id`),
+  CONSTRAINT `projectweb_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -259,4 +271,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
--- 2017-03-10 17:13:03
+-- 2017-03-14 11:46:02
