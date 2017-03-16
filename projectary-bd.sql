@@ -1,4 +1,4 @@
--- MySQL dump
+-- MySQL dump2
 
 SET NAMES utf8;
 SET foreign_key_checks = 0;
