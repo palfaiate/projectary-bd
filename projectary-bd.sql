@@ -8,24 +8,23 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 DELIMITER ;;
 
 DROP PROCEDURE IF EXISTS `InsertNewEntity`;;
-CREATE DEFINER=`root`@`192.168.122.%` PROCEDURE `InsertNewEntity`(IN `name`      VARCHAR(255), IN `type` INT(11), IN `studentid` VARCHAR(255),
-                                   IN `teacherid` VARCHAR(255))
+CREATE PROCEDURE `InsertNewEntity`(IN `name`      VARCHAR(255), IN `type` INT(11), IN `extid` VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
  SELECT UUID() INTO UUID;
  Insert INTO entity VALUES (UUID,name,NOW());
 CASE
-WHEN type=1 THEN INSERT INTO student VALUES(UUID,studentid);
-WHEN type=2 THEN INSERT INTO teacher VALUES(UUID,teacherid);
+WHEN type=1 THEN INSERT INTO student VALUES(UUID,extid);
+WHEN type=2 THEN INSERT INTO teacher VALUES(UUID,extid);
 END CASE;
 END;;
 
 DROP PROCEDURE IF EXISTS `ListEntities`;;
-CREATE DEFINER=`root`@`192.168.122.%` PROCEDURE `ListEntities`(IN `type` INT(11), IN `studentid` VARCHAR(255),IN `teacheris` VARCHAR(255),IN id VARCHAR(255))
+CREATE PROCEDURE `ListEntities`(IN `type` INT(11), IN `extid` VARCHAR(255),IN `fname` VARCHAR(255),IN `lname` VARCHAR(255),IN id VARCHAR(255))
 BEGIN
 CASE
-WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where (e.id=s.id and s.studentid like CONCAT(CONCAT('%',@studentid),'%') OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',@id),'%')));
-WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where (e.id=t.id and t.teacherid like CONCAT(CONCAT('%',@teacherid),'%') OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',@id),'%')));
+WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where ((e.id=s.id and s.studentid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
+WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where ((e.id=t.id and t.teacherid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
 END CASE;
 END;;
 
@@ -84,19 +83,6 @@ CREATE TABLE `attribute` (
   `datatype` varchar(30) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-
-DROP TABLE IF EXISTS `applicationattribute`;
-CREATE TABLE `applicationattribute` (
-  `application` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `attribute` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `value` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`application`,`attribute`),
-  KEY `applicationattribute_attribute_fk` (`attribute`),
-  CONSTRAINT `applicationattribute_application_fk` FOREIGN KEY (`application`) REFERENCES `application` (`id`),
-  CONSTRAINT `applicationattribute_attribute_fk` FOREIGN KEY (`attribute`) REFERENCES `attribute` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 
 DROP TABLE IF EXISTS `function`;
 CREATE TABLE `function` (
@@ -189,7 +175,6 @@ CREATE TABLE `projectrevlogdoc` (
   CONSTRAINT `projectrevlogdoc_prjrevlog_fk` FOREIGN KEY (`projectrevlog`) REFERENCES `projectrevlog` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
 DROP TABLE IF EXISTS `rolepermission`;
 CREATE TABLE `rolepermission` (
   `role` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -232,7 +217,6 @@ CREATE TABLE `student` (
   CONSTRAINT `student_id_fk` FOREIGN KEY (`id`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
 DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE `teacher` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -259,4 +243,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
--- 2017-03-10 17:13:03
+-- 2017-03-14 16:32:20
