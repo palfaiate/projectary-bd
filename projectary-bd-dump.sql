@@ -661,7 +661,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewEntity`(IN `name`      VAR
 BEGIN
  DECLARE UUID VARCHAR(255);
  SELECT UUID() INTO UUID;
- Insert INTO entity VALUES (UUID,name,NOW());
+ Insert INTO entity VALUES (UUID,fname,lname,NOW());
 CASE
 WHEN type=1 THEN INSERT INTO student VALUES(UUID,extid);
 WHEN type=2 THEN INSERT INTO teacher VALUES(UUID,extid);
@@ -963,4 +963,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-23  2:00:38
+-- Dump completed on 2017-03-23  2:02:58
