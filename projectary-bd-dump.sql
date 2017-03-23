@@ -916,11 +916,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ListEntities`(IN `type` INT(11), IN `extid` VARCHAR(255),IN `fname` VARCHAR(255),IN `lname` VARCHAR(255),IN id VARCHAR(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ListEntities`(IN `type`  INT(11), IN `extid` VARCHAR(255), IN `fname` VARCHAR(255),
+                                IN `lname` VARCHAR(255), IN `id` VARCHAR(255))
 BEGIN
 CASE
-WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where ((e.id=s.id and s.studentid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
-WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where ((e.id=t.id and t.teacherid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
+WHEN type=1 THEN SELECT e.id,e.fname,e.lname,s.studentid from entity as e,student as s where ((e.id=s.id and s.studentid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
+WHEN type=2 THEN SELECT e.id,e.fname,e.lname,t.teacherid from entity as e,teacher as t where ((e.id=t.id and t.teacherid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
 END CASE;
 END ;;
 DELIMITER ;
@@ -962,4 +963,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-23  1:47:14
+-- Dump completed on 2017-03-23  1:52:31
