@@ -24,17 +24,14 @@ DROP TABLE IF EXISTS `admin`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `role` varchar(255) COLLATE utf8_bin NOT NULL,
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updatedin` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deletedin` timestamp NULL DEFAULT NULL,
   `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `admin_role_fk` (`role`),
   KEY `admin_createdby_fk` (`createdby`),
   CONSTRAINT `admin_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `admin_entity_fk` FOREIGN KEY (`id`) REFERENCES `entity` (`id`),
-  CONSTRAINT `admin_role_fk` FOREIGN KEY (`role`) REFERENCES `role` (`id`)
+  CONSTRAINT `admin_entity_fk` FOREIGN KEY (`id`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -921,4 +918,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-23  1:26:49
+-- Dump completed on 2017-03-23  1:37:34
