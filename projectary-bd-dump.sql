@@ -24,17 +24,14 @@ DROP TABLE IF EXISTS `admin`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `role` varchar(255) COLLATE utf8_bin NOT NULL,
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updatedin` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deletedin` timestamp NULL DEFAULT NULL,
   `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `admin_role_fk` (`role`),
   KEY `admin_createdby_fk` (`createdby`),
   CONSTRAINT `admin_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `admin_entity_fk` FOREIGN KEY (`id`) REFERENCES `entity` (`id`),
-  CONSTRAINT `admin_role_fk` FOREIGN KEY (`role`) REFERENCES `role` (`id`)
+  CONSTRAINT `admin_entity_fk` FOREIGN KEY (`id`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -570,6 +567,25 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'projectary'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `InsertNewAdmin` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewAdmin`(IN `newadminentity` VARCHAR(255), IN `entity` VARCHAR(255))
+BEGIN
+ Insert INTO admin (ID,createdin,updatedin,createdby)VALUES (newadminentity,NOW(),NOW(),entity);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `InsertNewApplication` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -645,7 +661,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewEntity`(IN `name`      VAR
 BEGIN
  DECLARE UUID VARCHAR(255);
  SELECT UUID() INTO UUID;
- Insert INTO entity VALUES (UUID,name,NOW());
+ Insert INTO entity VALUES (UUID,fname,lname,NOW());
 CASE
 WHEN type=1 THEN INSERT INTO student VALUES(UUID,extid);
 WHEN type=2 THEN INSERT INTO teacher VALUES(UUID,extid);
@@ -865,6 +881,31 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `IsAdmin` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `IsAdmin`(IN `entity` VARCHAR(255))
+BEGIN
+ DECLARE ADMIN INT(1);
+    SELECT count(a.id) from admin as a where a.id=entity INTO ADMIN;
+    CASE
+      WHEN ADMIN <1 THEN SELECT 'false';
+      WHEN ADMIN =1 THEN SELECT 'true';
+      WHEN ADMIN >1 THEN SELECT 'false';
+    END CASE;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ListEntities` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -875,11 +916,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ListEntities`(IN `type` INT(11), IN `extid` VARCHAR(255),IN `fname` VARCHAR(255),IN `lname` VARCHAR(255),IN id VARCHAR(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ListEntities`(IN `type`  INT(11), IN `extid` VARCHAR(255), IN `fname` VARCHAR(255),
+                                IN `lname` VARCHAR(255), IN `id` VARCHAR(255))
 BEGIN
 CASE
-WHEN type=1 THEN SELECT e.id,e.name,s.studentid from entity as e,student as s where ((e.id=s.id and s.studentid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
-WHEN type=2 THEN SELECT e.id,e.name,t.teacherid from entity as e,teacher as t where ((e.id=t.id and t.teacherid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
+WHEN type=1 THEN SELECT e.id,e.fname,e.lname,s.studentid from entity as e,student as s where ((e.id=s.id and s.studentid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=s.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
+WHEN type=2 THEN SELECT e.id,e.fname,e.lname,t.teacherid from entity as e,teacher as t where ((e.id=t.id and t.teacherid like CONCAT(CONCAT('%',extid),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')) OR (e.id=t.id and e.id LIKE CONCAT(CONCAT('%',id),'%') and e.fname like CONCAT(CONCAT('%',fname),'%') and e.lname like CONCAT(CONCAT('%',lname),'%')));
 END CASE;
 END ;;
 DELIMITER ;
@@ -921,4 +963,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-23  1:26:49
+-- Dump completed on 2017-03-23  2:02:58
