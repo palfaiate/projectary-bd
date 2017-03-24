@@ -1,5 +1,5 @@
 /*
-Script generated on mar-24-2017 01:07:31 AM
+Script generated on mar-24-2017 02:16:19 PM
 Database: projectary
 Schema: <All Schemas>
 Objects: TABLE, PROCEDURE
@@ -54,6 +54,10 @@ GO
 
 ALTER TABLE "projectreventity"
 	DROP FOREIGN KEY "projectreventity_entity2_fk"
+GO
+
+ALTER TABLE "projectreventity"
+	DROP FOREIGN KEY "projectreventity_approval_fk"
 GO
 
 ALTER TABLE "projectrev"
@@ -160,6 +164,9 @@ DROP INDEX "projectlogs_entity_fk" ON projectrevlog
 GO
 
 DROP INDEX "projectlogs_projrev_fk" ON projectrevlog
+GO
+
+DROP INDEX "projectreventity_approval_fk" ON projectreventity
 GO
 
 DROP INDEX "projectreventity_entity2_fk" ON projectreventity
@@ -446,6 +453,8 @@ CREATE TABLE "projectreventity"  (
 	"function"  	varchar(255) NOT NULL,
 	"createdin" 	timestamp NOT NULL,
 	"createdby" 	varchar(255) NOT NULL,
+	"approvedby"	varchar(255) NULL,
+	"approvedin"	timestamp NULL,
 	PRIMARY KEY("projectrev","entity","function")
 )
 GO
@@ -779,6 +788,10 @@ CREATE INDEX "projectrev_proj_fk" USING BTREE
 	ON "projectrev"("project")
 GO
 
+CREATE INDEX "projectreventity_approval_fk" USING BTREE 
+	ON "projectreventity"("approvedby")
+GO
+
 CREATE INDEX "projectreventity_entity2_fk" USING BTREE 
 	ON "projectreventity"("entity")
 GO
@@ -1006,6 +1019,14 @@ GO
 ALTER TABLE "projectreventity"
 	ADD CONSTRAINT "projectreventity_entity2_fk"
 	FOREIGN KEY("entity")
+	REFERENCES "entity"("id")
+	ON DELETE RESTRICT 
+	ON UPDATE RESTRICT 
+GO
+
+ALTER TABLE "projectreventity"
+	ADD CONSTRAINT "projectreventity_approval_fk"
+	FOREIGN KEY("approvedby")
 	REFERENCES "entity"("id")
 	ON DELETE RESTRICT 
 	ON UPDATE RESTRICT 
