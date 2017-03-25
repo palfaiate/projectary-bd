@@ -16,6 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `projectary`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `projectary` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+
+USE `projectary`;
+
+--
 -- Table structure for table `admin`
 --
 
@@ -55,6 +63,7 @@ CREATE TABLE `application` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `submitedby` varchar(255) COLLATE utf8_bin NOT NULL,
   `submitedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `group` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `application_entity_fk` (`submitedby`),
   CONSTRAINT `application_entity_fk` FOREIGN KEY (`submitedby`) REFERENCES `entity` (`id`)
@@ -99,6 +108,36 @@ CREATE TABLE `applicationattribute` (
 LOCK TABLES `applicationattribute` WRITE;
 /*!40000 ALTER TABLE `applicationattribute` DISABLE KEYS */;
 /*!40000 ALTER TABLE `applicationattribute` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `applicationgroup`
+--
+
+DROP TABLE IF EXISTS `applicationgroup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `applicationgroup` (
+  `application` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `group` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `createdin` timestamp NULL DEFAULT NULL,
+  `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  KEY `applicationgroup_application_fk` (`application`),
+  KEY `applicationgroup_group_fk` (`group`),
+  KEY `applicationgroup_approvedby_fk` (`createdby`),
+  CONSTRAINT `applicationgroup_application_fk` FOREIGN KEY (`application`) REFERENCES `application` (`id`),
+  CONSTRAINT `applicationgroup_approvedby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `applicationgroup_group_fk` FOREIGN KEY (`group`) REFERENCES `groupentity` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `applicationgroup`
+--
+
+LOCK TABLES `applicationgroup` WRITE;
+/*!40000 ALTER TABLE `applicationgroup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `applicationgroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -307,6 +346,42 @@ LOCK TABLES `function` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `groupentity`
+--
+
+DROP TABLE IF EXISTS `groupentity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `groupentity` (
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `entity` varchar(255) COLLATE utf8_bin NOT NULL,
+  `function` varchar(255) COLLATE utf8_bin NOT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
+  `approvedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `approvedin` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`,`entity`,`function`),
+  KEY `groupentity_entity_fk` (`entity`),
+  KEY `groupentity_function_fk` (`function`),
+  KEY `groupentity_approval_fk` (`approvedby`),
+  KEY `groupentity_createdby_fk` (`createdby`),
+  CONSTRAINT `groupentity_approval_fk` FOREIGN KEY (`approvedby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `groupentity_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `groupentity_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`),
+  CONSTRAINT `groupentity_function_fk` FOREIGN KEY (`function`) REFERENCES `function` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `groupentity`
+--
+
+LOCK TABLES `groupentity` WRITE;
+/*!40000 ALTER TABLE `groupentity` DISABLE KEYS */;
+/*!40000 ALTER TABLE `groupentity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `project`
 --
 
@@ -367,40 +442,37 @@ LOCK TABLES `projectrev` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `projectreventity`
+-- Table structure for table `projectrevgroup`
 --
 
-DROP TABLE IF EXISTS `projectreventity`;
+DROP TABLE IF EXISTS `projectrevgroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `projectreventity` (
+CREATE TABLE `projectrevgroup` (
   `projectrev` varchar(255) COLLATE utf8_bin NOT NULL,
-  `entity` varchar(255) COLLATE utf8_bin NOT NULL,
-  `function` varchar(255) COLLATE utf8_bin NOT NULL,
-  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
-  `approvedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `approvedby` varchar(255) COLLATE utf8_bin NOT NULL,
   `approvedin` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`projectrev`,`entity`,`function`),
-  KEY `projectreventity_function_fk` (`function`),
-  KEY `projectreventity_project_index` (`projectrev`),
-  KEY `projectreventity_entity2_fk` (`entity`),
-  KEY `projectreventity_approval_fk` (`approvedby`),
-  CONSTRAINT `projectreventity_approval_fk` FOREIGN KEY (`approvedby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectreventity_entity2_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectreventity_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectreventity_function_fk` FOREIGN KEY (`function`) REFERENCES `function` (`id`),
+  `groupentity` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`projectrev`),
+  KEY `projectreventity_groupentity_fk` (`groupentity`),
+  KEY `projectreventity_approvedby_fk` (`approvedby`),
+  KEY `projectreventity_createdby_fk` (`createdby`),
+  CONSTRAINT `projectreventity_approvedby_fk` FOREIGN KEY (`approvedby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `projectreventity_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `projectreventity_groupentity_fk` FOREIGN KEY (`groupentity`) REFERENCES `groupentity` (`id`),
   CONSTRAINT `projectreventity_projrev_fk` FOREIGN KEY (`projectrev`) REFERENCES `projectrev` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `projectreventity`
+-- Dumping data for table `projectrevgroup`
 --
 
-LOCK TABLES `projectreventity` WRITE;
-/*!40000 ALTER TABLE `projectreventity` DISABLE KEYS */;
-/*!40000 ALTER TABLE `projectreventity` ENABLE KEYS */;
+LOCK TABLES `projectrevgroup` WRITE;
+/*!40000 ALTER TABLE `projectrevgroup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectrevgroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1016,4 +1088,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-24 21:44:50
+-- Dump completed on 2017-03-25 10:02:09
