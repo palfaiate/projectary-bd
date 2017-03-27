@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+<style type='text/css'>
+body { margin:0; padding:5; background-color:#ffffff; }
+tr { vertical-align:top; }
+td { padding:1; }
+.TABCOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#FFFFCD; }
+.TABCOL td { border-width:1px; border-style:solid; border-color:gray; }
+.VIECOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#F0F0FF; }
+.VIECOL td { border-width:1px; border-style:solid; border-color:gray; }
+.INDCOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#FFD0FF; }
+.INDCOL td { border-width:1px; border-style:solid; border-color:gray; }
+.tableHeader { background-color:#d0d0d0; font-weight:bold; }
+</style>
+</head>
+<body>
+<table style='width:100%; background-color:#e0e0e0; padding:1;' border=0><tr><td>
+<a href='overview.html' target='main'>Overview</a>
+ &nbsp; <a href='names-0.html' target='main'>Index</a>
+</tr></td></table>
+<h1>projectrevgroup</h1>
+Table<br>
+Database: projectary <hr size=1>
+<table class='TABCOL'>
+<tr class='tableHeader'>
+<td>Name</td><td>Data Type</td><td>Comment</td></tr>
+<tr>
+<td>projectrev</td>
+<td>projectrev : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>createdin</td>
+<td>createdin : timestamp : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>createdby</td>
+<td>createdby : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>approvedby</td>
+<td>approvedby : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>approvedin</td>
+<td>approvedin : timestamp : <span style='color:#008000'>NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>groupentity</td>
+<td>groupentity : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>NULL</span></td>
+<td></td>
+</tr>
+</table><h2>Sheet</h2>
+<a href='sheet_Projectary.html' target='main'>Projectary</a>
+&nbsp;&nbsp;<br>
+<br>
+<h2>Relationships</h2>
+<a href='relationship_projectary.projectrevgroup.projectreventity_projrev_fk.html' target='main'>projectreventity_projrev_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrevgroup.html' target='main'>projectary.projectrevgroup</a>
+ ( projectrev )<br>
+<br>
+<a href='relationship_projectary.projectrevgroup.projectreventity_createdby_fk.html' target='main'>projectreventity_createdby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrevgroup.html' target='main'>projectary.projectrevgroup</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.projectrevgroup.projectreventity_approvedby_fk.html' target='main'>projectreventity_approvedby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrevgroup.html' target='main'>projectary.projectrevgroup</a>
+ ( approvedby )<br>
+<br>
+<a href='relationship_projectary.projectrevgroup.projectreventity_groupentity_fk.html' target='main'>projectreventity_groupentity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrevgroup.html' target='main'>projectary.projectrevgroup</a>
+ ( groupentity )<br>
+<br>
+<h2>Indexes</h2>
+<a href='index_projectary.projectrevgroup.projectreventity_groupentity_fk.html' target='main'>projectary.projectrevgroup.projectreventity_groupentity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; groupentity<br>
+<br>
+<a href='index_projectary.projectrevgroup.projectreventity_createdby_fk.html' target='main'>projectary.projectrevgroup.projectreventity_createdby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; createdby<br>
+<br>
+<a href='index_projectary.projectrevgroup.projectreventity_approvedby_fk.html' target='main'>projectary.projectrevgroup.projectreventity_approvedby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; approvedby<br>
+<br>
+<h2>Constraints</h2>
+<a href='constraint_projectary.projectrevgroup.PRIMARY.html' target='main'>PRIMARY</a>
+ Primary key constraint<br>
+&nbsp; &nbsp; &nbsp; &nbsp; ( projectrev )<br>
+<h2>Referenced by</h2>
+<a href='view_projectary.entity.html' target='main'>projectary.entity</a>
+<br>
+<a href='view_projectary.groupentity.html' target='main'>projectary.groupentity</a>
+<br>
+<a href='view_projectary.projectrev.html' target='main'>projectary.projectrev</a>
+<br>
+<br>
+<hr size=1>
+Powered by PSI by <a href='http://www.ipt.pt' target='_blank'>IPT-LEI</a>.
+</body>
+</html>

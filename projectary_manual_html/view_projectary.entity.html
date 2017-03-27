@@ -1,0 +1,225 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+<style type='text/css'>
+body { margin:0; padding:5; background-color:#ffffff; }
+tr { vertical-align:top; }
+td { padding:1; }
+.TABCOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#FFFFCD; }
+.TABCOL td { border-width:1px; border-style:solid; border-color:gray; }
+.VIECOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#F0F0FF; }
+.VIECOL td { border-width:1px; border-style:solid; border-color:gray; }
+.INDCOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#FFD0FF; }
+.INDCOL td { border-width:1px; border-style:solid; border-color:gray; }
+.tableHeader { background-color:#d0d0d0; font-weight:bold; }
+</style>
+</head>
+<body>
+<table style='width:100%; background-color:#e0e0e0; padding:1;' border=0><tr><td>
+<a href='overview.html' target='main'>Overview</a>
+ &nbsp; <a href='names-0.html' target='main'>Index</a>
+</tr></td></table>
+<h1>entity</h1>
+Table<br>
+Database: projectary <hr size=1>
+<table class='TABCOL'>
+<tr class='tableHeader'>
+<td>Name</td><td>Data Type</td><td>Comment</td></tr>
+<tr>
+<td>id</td>
+<td>id : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>name : varchar (255) : <span style='color:#008000'>NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>createdin</td>
+<td>createdin : timestamp : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+</table><h2>Sheet</h2>
+<a href='sheet_Projectary.html' target='main'>Projectary</a>
+&nbsp;&nbsp;<br>
+<br>
+<h2>Relationships</h2>
+<a href='relationship_projectary.admin.admin_entity_fk.html' target='main'>admin_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.admin.html' target='main'>projectary.admin</a>
+ ( id )<br>
+<br>
+<a href='relationship_projectary.admin.admin_createdby_fk.html' target='main'>admin_createdby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.admin.html' target='main'>projectary.admin</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.application.application_entity_fk.html' target='main'>application_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.application.html' target='main'>projectary.application</a>
+ ( submitedby )<br>
+<br>
+<a href='relationship_projectary.applicationattribute.applicationattribute_entity_fk.html' target='main'>applicationattribute_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.applicationattribute.html' target='main'>projectary.applicationattribute</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.applicationgroup.applicationgroup_approvedby_fk.html' target='main'>applicationgroup_approvedby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.applicationgroup.html' target='main'>projectary.applicationgroup</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.courseentity.courseentity_entity_fk.html' target='main'>courseentity_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.courseentity.html' target='main'>projectary.courseentity</a>
+ ( entity )<br>
+<br>
+<a href='relationship_projectary.departamententity.departamententity_entity_fk.html' target='main'>departamententity_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.departamententity.html' target='main'>projectary.departamententity</a>
+ ( entity )<br>
+<br>
+<a href='relationship_projectary.entitycontact.entitycontact_entity_fk.html' target='main'>entitycontact_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.entitycontact.html' target='main'>projectary.entitycontact</a>
+ ( entity )<br>
+<br>
+<a href='relationship_projectary.function.function_entity_fk.html' target='main'>function_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.function.html' target='main'>projectary.function</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.groupentity.groupentity_entity_fk.html' target='main'>groupentity_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.groupentity.html' target='main'>projectary.groupentity</a>
+ ( entity )<br>
+<br>
+<a href='relationship_projectary.groupentity.groupentity_createdby_fk.html' target='main'>groupentity_createdby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.groupentity.html' target='main'>projectary.groupentity</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.groupentity.groupentity_approval_fk.html' target='main'>groupentity_approval_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.groupentity.html' target='main'>projectary.groupentity</a>
+ ( approvedby )<br>
+<br>
+<a href='relationship_projectary.project.project_entity_fk.html' target='main'>project_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.project.html' target='main'>projectary.project</a>
+ ( approvedby )<br>
+<br>
+<a href='relationship_projectary.projectrev.projectrev_entity_fk.html' target='main'>projectrev_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrev.html' target='main'>projectary.projectrev</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.projectrevgroup.projectreventity_createdby_fk.html' target='main'>projectreventity_createdby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrevgroup.html' target='main'>projectary.projectrevgroup</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.projectrevgroup.projectreventity_approvedby_fk.html' target='main'>projectreventity_approvedby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrevgroup.html' target='main'>projectary.projectrevgroup</a>
+ ( approvedby )<br>
+<br>
+<a href='relationship_projectary.projectrevlog.projectlogs_entity_fk.html' target='main'>projectlogs_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrevlog.html' target='main'>projectary.projectrevlog</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.projectrevlogdoc.projectrevlogdoc_entity_fk.html' target='main'>projectrevlogdoc_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectrevlogdoc.html' target='main'>projectary.projectrevlogdoc</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.projectweb.projectweb_entity_fk.html' target='main'>projectweb_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.projectweb.html' target='main'>projectary.projectweb</a>
+ ( createdby )<br>
+<br>
+<a href='relationship_projectary.student.student_id_fk.html' target='main'>student_id_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.student.html' target='main'>projectary.student</a>
+ ( id )<br>
+<br>
+<a href='relationship_projectary.teacher.teacher_fk.html' target='main'>teacher_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.teacher.html' target='main'>projectary.teacher</a>
+ ( id )<br>
+<br>
+<a href='relationship_projectary.users.users_entity_fk.html' target='main'>users_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.users.html' target='main'>projectary.users</a>
+ ( entity )<br>
+<br>
+<h2>Constraints</h2>
+<a href='constraint_projectary.entity.PRIMARY.html' target='main'>PRIMARY</a>
+ Primary key constraint<br>
+&nbsp; &nbsp; &nbsp; &nbsp; ( id )<br>
+<h2>Referenced by</h2>
+<a href='view_projectary.admin.html' target='main'>projectary.admin</a>
+<br>
+<a href='view_projectary.application.html' target='main'>projectary.application</a>
+<br>
+<a href='view_projectary.applicationattribute.html' target='main'>projectary.applicationattribute</a>
+<br>
+<a href='view_projectary.applicationgroup.html' target='main'>projectary.applicationgroup</a>
+<br>
+<a href='view_projectary.courseentity.html' target='main'>projectary.courseentity</a>
+<br>
+<a href='view_projectary.departamententity.html' target='main'>projectary.departamententity</a>
+<br>
+<a href='view_projectary.entitycontact.html' target='main'>projectary.entitycontact</a>
+<br>
+<a href='view_projectary.function.html' target='main'>projectary.function</a>
+<br>
+<a href='view_projectary.groupentity.html' target='main'>projectary.groupentity</a>
+<br>
+<a href='view_projectary.project.html' target='main'>projectary.project</a>
+<br>
+<a href='view_projectary.projectrev.html' target='main'>projectary.projectrev</a>
+<br>
+<a href='view_projectary.projectrevgroup.html' target='main'>projectary.projectrevgroup</a>
+<br>
+<a href='view_projectary.projectrevlog.html' target='main'>projectary.projectrevlog</a>
+<br>
+<a href='view_projectary.projectrevlogdoc.html' target='main'>projectary.projectrevlogdoc</a>
+<br>
+<a href='view_projectary.projectweb.html' target='main'>projectary.projectweb</a>
+<br>
+<a href='view_projectary.student.html' target='main'>projectary.student</a>
+<br>
+<a href='view_projectary.teacher.html' target='main'>projectary.teacher</a>
+<br>
+<a href='view_projectary.users.html' target='main'>projectary.users</a>
+<br>
+<br>
+<hr size=1>
+Powered by PSI by <a href='http://www.ipt.pt' target='_blank'>IPT-LEI</a>.
+</body>
+</html>
