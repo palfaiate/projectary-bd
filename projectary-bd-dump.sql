@@ -173,9 +173,11 @@ DROP TABLE IF EXISTS `course`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `course` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `desc` int(11) NOT NULL,
+  `desc` varchar(255) COLLATE utf8_bin NOT NULL,
   `school` varchar(255) COLLATE utf8_bin NOT NULL,
+  `numcurso` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `course_numcurso_uindex` (`numcurso`),
   KEY `course_school_fk` (`school`),
   CONSTRAINT `course_school_fk` FOREIGN KEY (`school`) REFERENCES `school` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -1089,4 +1091,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-27 12:16:21
+-- Dump completed on 2017-03-27 21:25:25
