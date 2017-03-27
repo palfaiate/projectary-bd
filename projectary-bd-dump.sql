@@ -128,7 +128,7 @@ CREATE TABLE `applicationgroup` (
   CONSTRAINT `applicationgroup_application_fk` FOREIGN KEY (`application`) REFERENCES `application` (`id`),
   CONSTRAINT `applicationgroup_approvedby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
   CONSTRAINT `applicationgroup_group_fk` FOREIGN KEY (`group`) REFERENCES `groupentity` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table Used to Associate a Group of Entities to an Application';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,6 +356,7 @@ CREATE TABLE `groupentity` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `entity` varchar(255) COLLATE utf8_bin NOT NULL,
   `function` varchar(255) COLLATE utf8_bin NOT NULL,
+  `grade` decimal(10,0) DEFAULT '0',
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
   `approvedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -369,7 +370,7 @@ CREATE TABLE `groupentity` (
   CONSTRAINT `groupentity_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
   CONSTRAINT `groupentity_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`),
   CONSTRAINT `groupentity_function_fk` FOREIGN KEY (`function`) REFERENCES `function` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table Used to Create Groups of Entities';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -493,7 +494,7 @@ CREATE TABLE `projectrevlog` (
   KEY `projectlogs_entity_fk` (`createdby`),
   CONSTRAINT `projectlogs_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
   CONSTRAINT `projectlogs_projrev_fk` FOREIGN KEY (`project`) REFERENCES `projectrev` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table to Register Project Logs';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -524,7 +525,7 @@ CREATE TABLE `projectrevlogdoc` (
   KEY `projectrevlogdoc_entity_fk` (`createdby`),
   CONSTRAINT `projectrevlogdoc_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
   CONSTRAINT `projectrevlogdoc_prjrevlog_fk` FOREIGN KEY (`projectrevlog`) REFERENCES `projectrevlog` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table to Add Documents Related to Project Logs';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -551,7 +552,7 @@ CREATE TABLE `projectweb` (
   KEY `projectweb_entity_fk` (`createdby`),
   CONSTRAINT `projectweb_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
   CONSTRAINT `projectweb_project_fk` FOREIGN KEY (`id`) REFERENCES `project` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table Used to Define Which Projects Show on Public Page';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1088,4 +1089,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-25 10:02:09
+-- Dump completed on 2017-03-27 12:16:21
