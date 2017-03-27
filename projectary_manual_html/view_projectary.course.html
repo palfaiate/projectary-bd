@@ -32,12 +32,17 @@ Database: projectary <hr size=1>
 </tr>
 <tr>
 <td>desc</td>
-<td>desc : int (11) : <span style='color:#008000'>Not NULL</span></td>
+<td>desc : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
 <td></td>
 </tr>
 <tr>
 <td>school</td>
 <td>school : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>numcurso</td>
+<td>numcurso : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
 <td></td>
 </tr>
 </table><h2>Sheet</h2>
@@ -66,6 +71,9 @@ Database: projectary <hr size=1>
 <a href='constraint_projectary.course.PRIMARY.html' target='main'>PRIMARY</a>
  Primary key constraint<br>
 &nbsp; &nbsp; &nbsp; &nbsp; ( id )<br>
+<a href='constraint_projectary.course.course_numcurso_uindex.html' target='main'>course_numcurso_uindex</a>
+ Unique constraint<br>
+&nbsp; &nbsp; &nbsp; &nbsp; ( numcurso )<br>
 <h2>Referenced by</h2>
 <a href='view_projectary.courseentity.html' target='main'>projectary.courseentity</a>
 <br>
