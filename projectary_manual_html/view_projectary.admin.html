@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+<style type='text/css'>
+body { margin:0; padding:5; background-color:#ffffff; }
+tr { vertical-align:top; }
+td { padding:1; }
+.TABCOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#FFFFCD; }
+.TABCOL td { border-width:1px; border-style:solid; border-color:gray; }
+.VIECOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#F0F0FF; }
+.VIECOL td { border-width:1px; border-style:solid; border-color:gray; }
+.INDCOL { border-collapse:collapse; border-width:1px; border-style:solid; border-color:gray; width:100%; background-color:#FFD0FF; }
+.INDCOL td { border-width:1px; border-style:solid; border-color:gray; }
+.tableHeader { background-color:#d0d0d0; font-weight:bold; }
+</style>
+</head>
+<body>
+<table style='width:100%; background-color:#e0e0e0; padding:1;' border=0><tr><td>
+<a href='overview.html' target='main'>Overview</a>
+ &nbsp; <a href='names-0.html' target='main'>Index</a>
+</tr></td></table>
+<h1>admin</h1>
+Table<br>
+Database: projectary <hr size=1>
+<table class='TABCOL'>
+<tr class='tableHeader'>
+<td>Name</td><td>Data Type</td><td>Comment</td></tr>
+<tr>
+<td>id</td>
+<td>id : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>createdin</td>
+<td>createdin : timestamp : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>updatedin</td>
+<td>updatedin : timestamp : <span style='color:#008000'>Not NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>deletedin</td>
+<td>deletedin : timestamp : <span style='color:#008000'>NULL</span></td>
+<td></td>
+</tr>
+<tr>
+<td>createdby</td>
+<td>createdby : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>NULL</span></td>
+<td></td>
+</tr>
+</table><h2>Sheet</h2>
+<a href='sheet_Projectary.html' target='main'>Projectary</a>
+&nbsp;&nbsp;<br>
+<br>
+<h2>Relationships</h2>
+<a href='relationship_projectary.admin.admin_entity_fk.html' target='main'>admin_entity_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.admin.html' target='main'>projectary.admin</a>
+ ( id )<br>
+<br>
+<a href='relationship_projectary.admin.admin_createdby_fk.html' target='main'>admin_createdby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; id<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &rarr; <a href='view_projectary.admin.html' target='main'>projectary.admin</a>
+ ( createdby )<br>
+<br>
+<h2>Indexes</h2>
+<a href='index_projectary.admin.admin_createdby_fk.html' target='main'>projectary.admin.admin_createdby_fk</a>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; createdby<br>
+<br>
+<h2>Constraints</h2>
+<a href='constraint_projectary.admin.PRIMARY.html' target='main'>PRIMARY</a>
+ Primary key constraint<br>
+&nbsp; &nbsp; &nbsp; &nbsp; ( id )<br>
+<h2>Referenced by</h2>
+<a href='view_projectary.entity.html' target='main'>projectary.entity</a>
+<br>
+<br>
+<hr size=1>
+Powered by PSI by <a href='http://www.ipt.pt' target='_blank'>IPT-LEI</a>.
+</body>
+</html>
