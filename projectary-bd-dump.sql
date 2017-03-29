@@ -764,13 +764,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewEntity`(IN name VARCHAR(255), IN type INT, IN extid VARCHAR(255), OUT result VARCHAR(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewEntity`(IN name VARCHAR(255), IN type INT, IN extid VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
- Insert INTO entity VALUES (UUID,name,NOW());
 CASE
-WHEN type=1 THEN  SELECT UUID() INTO UUID;INSERT INTO student VALUES(UUID,extid);
-WHEN type=2 THEN  SELECT UUID() INTO UUID;INSERT INTO teacher VALUES(UUID,extid);
+WHEN type=1 THEN  SELECT UUID() INTO UUID;Insert INTO entity VALUES (UUID,name,NOW());INSERT INTO student VALUES(UUID,extid);
+WHEN type=2 THEN  SELECT UUID() INTO UUID;Insert INTO entity VALUES (UUID,name,NOW());INSERT INTO teacher VALUES(UUID,extid);
 END CASE;
 END ;;
 DELIMITER ;
@@ -954,15 +953,16 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewUser`(IN username VARCHAR(255), IN password VARCHAR(255),IN name VARCHAR(255), IN email VARCHAR(255), IN type INT(1)
-                               ,IN extid    VARCHAR(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewUser`(IN username VARCHAR(255), IN password VARCHAR(255), IN name VARCHAR(255),
+                               IN email    VARCHAR(255), IN type INT(1), IN extid VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
 CASE
-WHEN type=1 THEN CALL InsertNewEntity(name,type,extid,UUID);INSERT INTO student VALUES(UUID,extid);
-WHEN type=2 THEN CALL InsertNewEntity(name,type,extid,UUID);INSERT INTO teacher VALUES(UUID,extid);
+WHEN type=1 THEN CALL InsertNewEntity(name,type,extid);SELECT id from student where studentid=extid INTO UUID;
+WHEN type=2 THEN CALL InsertNewEntity(name,type,extid);SELECT id from teacher where teacherid=extid INTO UUID;
 END CASE;
-    INSERT INTO users VALUES(UUID,username,password,NOW(),0,1,UUID,email);
+
+    INSERT INTO users (id,username,password,email,createdin,locked,active,entity)VALUES(UUID,username,password,email,NOW(),0,0,UUID);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1091,4 +1091,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-29 22:18:01
+-- Dump completed on 2017-03-29 22:53:05
