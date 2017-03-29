@@ -657,6 +657,7 @@ CREATE TABLE `users` (
   `entity` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_uindex` (`username`),
+  UNIQUE KEY `users_email_uindex` (`email`),
   KEY `users_entity_fk` (`entity`),
   CONSTRAINT `users_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -1091,4 +1092,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-30  0:11:00
+-- Dump completed on 2017-03-30  0:18:30
