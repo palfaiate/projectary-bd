@@ -396,6 +396,8 @@ CREATE TABLE `project` (
   `application` varchar(255) COLLATE utf8_bin NOT NULL,
   `approvedby` varchar(255) COLLATE utf8_bin NOT NULL,
   `approvedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start` date DEFAULT NULL,
+  `end` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `project_application_uindex` (`application`),
   KEY `project_entity_fk` (`approvedby`),
@@ -1092,4 +1094,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-31 21:35:41
+-- Dump completed on 2017-03-31 21:42:16
