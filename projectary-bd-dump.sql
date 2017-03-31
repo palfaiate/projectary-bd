@@ -480,37 +480,6 @@ LOCK TABLES `projectlogdoc` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `projectrev`
---
-
-DROP TABLE IF EXISTS `projectrev`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `projectrev` (
-  `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `project` varchar(255) COLLATE utf8_bin NOT NULL,
-  `start` date NOT NULL,
-  `end` date NOT NULL,
-  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `projectrev_proj_fk` (`project`),
-  KEY `projectrev_entity_fk` (`createdby`),
-  CONSTRAINT `projectrev_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectrev_proj_fk` FOREIGN KEY (`project`) REFERENCES `project` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `projectrev`
---
-
-LOCK TABLES `projectrev` WRITE;
-/*!40000 ALTER TABLE `projectrev` DISABLE KEYS */;
-/*!40000 ALTER TABLE `projectrev` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `projectweb`
 --
 
@@ -1061,4 +1030,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-31 22:00:40
+-- Dump completed on 2017-03-31 22:19:35
