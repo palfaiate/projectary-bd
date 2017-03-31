@@ -414,6 +414,100 @@ LOCK TABLES `project` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `projectgroup`
+--
+
+DROP TABLE IF EXISTS `projectgroup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projectgroup` (
+  `project` varchar(255) COLLATE utf8_bin NOT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
+  `approvedby` varchar(255) COLLATE utf8_bin NOT NULL,
+  `approvedin` timestamp NULL DEFAULT NULL,
+  `groupentity` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`project`),
+  KEY `projectreventity_groupentity_fk` (`groupentity`),
+  KEY `projectreventity_approvedby_fk` (`approvedby`),
+  KEY `projectreventity_createdby_fk` (`createdby`),
+  CONSTRAINT `projectreventity_approvedby_fk` FOREIGN KEY (`approvedby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `projectreventity_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `projectreventity_groupentity_fk` FOREIGN KEY (`groupentity`) REFERENCES `groupentity` (`id`),
+  CONSTRAINT `projectreventity_proj_fk` FOREIGN KEY (`project`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projectgroup`
+--
+
+LOCK TABLES `projectgroup` WRITE;
+/*!40000 ALTER TABLE `projectgroup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectgroup` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `projectlog`
+--
+
+DROP TABLE IF EXISTS `projectlog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projectlog` (
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `project` varchar(255) COLLATE utf8_bin NOT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
+  `desc` longtext COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `projectlogs_projrev_fk` (`project`),
+  KEY `projectlogs_entity_fk` (`createdby`),
+  CONSTRAINT `projectlogs_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `projectlogs_proj_fk` FOREIGN KEY (`project`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table to Register Project Logs';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projectlog`
+--
+
+LOCK TABLES `projectlog` WRITE;
+/*!40000 ALTER TABLE `projectlog` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectlog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `projectlogdoc`
+--
+
+DROP TABLE IF EXISTS `projectlogdoc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projectlogdoc` (
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `projectrevlog` varchar(255) COLLATE utf8_bin NOT NULL,
+  `url` longtext COLLATE utf8_bin,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `projectrevlogdoc_prjrevlog_fk` (`projectrevlog`),
+  KEY `projectrevlogdoc_entity_fk` (`createdby`),
+  CONSTRAINT `projectrevlogdoc_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `projectrevlogdoc_prjrevlog_fk` FOREIGN KEY (`projectrevlog`) REFERENCES `projectlog` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table to Add Documents Related to Project Logs';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projectlogdoc`
+--
+
+LOCK TABLES `projectlogdoc` WRITE;
+/*!40000 ALTER TABLE `projectlogdoc` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectlogdoc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `projectrev`
 --
 
@@ -442,101 +536,6 @@ CREATE TABLE `projectrev` (
 LOCK TABLES `projectrev` WRITE;
 /*!40000 ALTER TABLE `projectrev` DISABLE KEYS */;
 /*!40000 ALTER TABLE `projectrev` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `projectrevgroup`
---
-
-DROP TABLE IF EXISTS `projectrevgroup`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `projectrevgroup` (
-  `projectrev` varchar(255) COLLATE utf8_bin NOT NULL,
-  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
-  `approvedby` varchar(255) COLLATE utf8_bin NOT NULL,
-  `approvedin` timestamp NULL DEFAULT NULL,
-  `groupentity` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (`projectrev`),
-  KEY `projectreventity_groupentity_fk` (`groupentity`),
-  KEY `projectreventity_approvedby_fk` (`approvedby`),
-  KEY `projectreventity_createdby_fk` (`createdby`),
-  CONSTRAINT `projectreventity_approvedby_fk` FOREIGN KEY (`approvedby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectreventity_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectreventity_groupentity_fk` FOREIGN KEY (`groupentity`) REFERENCES `groupentity` (`id`),
-  CONSTRAINT `projectreventity_projrev_fk` FOREIGN KEY (`projectrev`) REFERENCES `projectrev` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `projectrevgroup`
---
-
-LOCK TABLES `projectrevgroup` WRITE;
-/*!40000 ALTER TABLE `projectrevgroup` DISABLE KEYS */;
-/*!40000 ALTER TABLE `projectrevgroup` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `projectrevlog`
---
-
-DROP TABLE IF EXISTS `projectrevlog`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `projectrevlog` (
-  `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `project` varchar(255) COLLATE utf8_bin NOT NULL,
-  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
-  `desc` longtext COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `projectlogs_projrev_fk` (`project`),
-  KEY `projectlogs_entity_fk` (`createdby`),
-  CONSTRAINT `projectlogs_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectlogs_projrev_fk` FOREIGN KEY (`project`) REFERENCES `projectrev` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table to Register Project Logs';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `projectrevlog`
---
-
-LOCK TABLES `projectrevlog` WRITE;
-/*!40000 ALTER TABLE `projectrevlog` DISABLE KEYS */;
-/*!40000 ALTER TABLE `projectrevlog` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `projectrevlogdoc`
---
-
-DROP TABLE IF EXISTS `projectrevlogdoc`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `projectrevlogdoc` (
-  `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `projectrevlog` varchar(255) COLLATE utf8_bin NOT NULL,
-  `doc` longblob,
-  `url` longtext COLLATE utf8_bin,
-  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `projectrevlogdoc_prjrevlog_fk` (`projectrevlog`),
-  KEY `projectrevlogdoc_entity_fk` (`createdby`),
-  CONSTRAINT `projectrevlogdoc_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectrevlogdoc_prjrevlog_fk` FOREIGN KEY (`projectrevlog`) REFERENCES `projectrevlog` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table to Add Documents Related to Project Logs';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `projectrevlogdoc`
---
-
-LOCK TABLES `projectrevlogdoc` WRITE;
-/*!40000 ALTER TABLE `projectrevlogdoc` DISABLE KEYS */;
-/*!40000 ALTER TABLE `projectrevlogdoc` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -654,12 +653,10 @@ CREATE TABLE `users` (
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `locked` tinyint(1) DEFAULT '0',
   `active` tinyint(1) DEFAULT '0',
-  `entity` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_uindex` (`username`),
   UNIQUE KEY `users_email_uindex` (`email`),
-  KEY `users_entity_fk` (`entity`),
-  CONSTRAINT `users_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`)
+  CONSTRAINT `users_entity_fk` FOREIGN KEY (`id`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -892,7 +889,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewUser`(IN username VARCHAR(255), IN password VARCHAR(255), IN name VARCHAR(255),
-                               IN email    VARCHAR(255), IN type INT(1), IN extid VARCHAR(255))
+                                   IN email    VARCHAR(255), IN type INT(1), IN extid VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
     CASE
@@ -900,7 +897,7 @@ BEGIN
     WHEN type=2 THEN CALL InsertNewEntity(name,type,extid);SELECT id from teacher where teacherid=extid INTO UUID;
     END CASE;
 
-    INSERT INTO users (id,username,password,email,createdin,locked,active,entity)VALUES(UUID,username,password,email,NOW(),0,0,UUID);
+    INSERT INTO users (id,username,password,email,createdin,locked,active)VALUES(UUID,username,password,email,NOW(),0,0);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1072,6 +1069,9 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewEntity`(IN name VARCHAR(255), IN type INT, IN extid VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
+ DECLARE NOTUNIQUE INT(4);
+ SET NOTUNIQUE:=(SELECT count(*) from student where studentid='123456');
+ SELECT NOTUNIQUE;
 CASE
 WHEN type=1 THEN  SELECT UUID() INTO UUID;Insert INTO entity VALUES (UUID,name,NOW());INSERT INTO student VALUES(UUID,extid);
 WHEN type=2 THEN  SELECT UUID() INTO UUID;Insert INTO entity VALUES (UUID,name,NOW());INSERT INTO teacher VALUES(UUID,extid);
@@ -1092,4 +1092,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-30  0:18:30
+-- Dump completed on 2017-03-31 21:35:41
