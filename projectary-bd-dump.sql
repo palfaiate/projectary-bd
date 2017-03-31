@@ -321,33 +321,6 @@ LOCK TABLES `entitycontact` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `function`
---
-
-DROP TABLE IF EXISTS `function`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `function` (
-  `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `desc` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `function_entity_fk` (`createdby`),
-  CONSTRAINT `function_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `function`
---
-
-LOCK TABLES `function` WRITE;
-/*!40000 ALTER TABLE `function` DISABLE KEYS */;
-/*!40000 ALTER TABLE `function` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `groupentity`
 --
 
@@ -357,21 +330,18 @@ DROP TABLE IF EXISTS `groupentity`;
 CREATE TABLE `groupentity` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `entity` varchar(255) COLLATE utf8_bin NOT NULL,
-  `function` varchar(255) COLLATE utf8_bin NOT NULL,
   `grade` decimal(10,0) DEFAULT '0',
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
   `approvedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `approvedin` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`,`entity`,`function`),
+  PRIMARY KEY (`id`,`entity`),
   KEY `groupentity_entity_fk` (`entity`),
-  KEY `groupentity_function_fk` (`function`),
   KEY `groupentity_approval_fk` (`approvedby`),
   KEY `groupentity_createdby_fk` (`createdby`),
   CONSTRAINT `groupentity_approval_fk` FOREIGN KEY (`approvedby`) REFERENCES `entity` (`id`),
   CONSTRAINT `groupentity_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `groupentity_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`),
-  CONSTRAINT `groupentity_function_fk` FOREIGN KEY (`function`) REFERENCES `function` (`id`)
+  CONSTRAINT `groupentity_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table Used to Create Groups of Entities';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1071,9 +1041,6 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewEntity`(IN name VARCHAR(255), IN type INT, IN extid VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
- DECLARE NOTUNIQUE INT(4);
- SET NOTUNIQUE:=(SELECT count(*) from student where studentid='123456');
- SELECT NOTUNIQUE;
 CASE
 WHEN type=1 THEN  SELECT UUID() INTO UUID;Insert INTO entity VALUES (UUID,name,NOW());INSERT INTO student VALUES(UUID,extid);
 WHEN type=2 THEN  SELECT UUID() INTO UUID;Insert INTO entity VALUES (UUID,name,NOW());INSERT INTO teacher VALUES(UUID,extid);
@@ -1094,4 +1061,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-31 21:42:16
+-- Dump completed on 2017-03-31 22:00:40
