@@ -293,6 +293,7 @@ CREATE TABLE `entity` (
 
 LOCK TABLES `entity` WRITE;
 /*!40000 ALTER TABLE `entity` DISABLE KEYS */;
+INSERT INTO `entity` VALUES ('26774d25-1857-11e7-a99b-525400f5614a','a','2017-04-03 10:20:24');
 /*!40000 ALTER TABLE `entity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -551,6 +552,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
+INSERT INTO `student` VALUES ('26774d25-1857-11e7-a99b-525400f5614a','123456');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -580,13 +582,13 @@ LOCK TABLES `teacher` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `users`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
+CREATE TABLE `user` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `username` varchar(255) COLLATE utf8_bin NOT NULL,
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -602,12 +604,13 @@ CREATE TABLE `users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('26774d25-1857-11e7-a99b-525400f5614a','username','a','email','2017-04-03 10:20:24',0,0);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -838,7 +841,7 @@ BEGIN
     WHEN type=2 THEN CALL InsertNewEntity(name,type,extid);SELECT id from teacher where teacherid=extid INTO UUID;
     END CASE;
 
-    INSERT INTO users (id,username,password,email,createdin,locked,active)VALUES(UUID,username,password,email,NOW(),0,0);
+    INSERT INTO user (id,username,password,email,createdin,locked,active)VALUES(UUID,username,password,email,NOW(),0,0);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -957,6 +960,30 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `API_UserExists` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `API_UserExists`(IN type INT(1), IN username VARCHAR(255), IN extid VARCHAR(255))
+BEGIN
+ DECLARE UserExists INT(1);
+ DECLARE EntityExists INT(1);
+    CASE
+    WHEN type=1 THEN SELECT COUNT(*) FROM user where user.username=username INTO UserExists;SELECT COUNT(*) from student as s where s.studentid=extid INTO EntityExists;SELECT UserExists,EntityExists;
+    WHEN type=2 THEN SELECT COUNT(*) FROM user where user.username=username INTO UserExists;SELECT COUNT(*) from teacher as t where t.teacherid=extid INTO EntityExists;SELECT UserExists,EntityExists;
+    END CASE;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `DEPRACATED_InsertNewProjectRevisionEntity` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1030,4 +1057,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-31 22:26:13
+-- Dump completed on 2017-04-03 11:28:22
