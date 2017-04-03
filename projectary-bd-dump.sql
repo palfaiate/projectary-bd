@@ -702,7 +702,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('26774d25-1857-11e7-a99b-525400f5614a','username','a','email','2017-04-03 10:20:24',0,0);
+INSERT INTO `user` VALUES ('26774d25-1857-11e7-a99b-525400f5614a','username','a','email','2017-04-03 20:35:57',0,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -852,6 +852,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `API_InsertNewProjectRevisionEntity` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewProjectRevisionEntity`(IN `projectrev` VARCHAR(255),IN `projentity` VARCHAR(255),IN `function` VARCHAR(255),IN `entity` VARCHAR(255))
+BEGIN
+    DECLARE UUID VARCHAR(255);
+    SELECT UUID() INTO UUID;
+    INSERT INTO projectreventity VALUES (projectrev,projentity,function,NOW(),entity);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `API_InsertNewProjectRevisionLog` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -909,6 +930,25 @@ BEGIN
     DECLARE UUID VARCHAR(255);
     SELECT UUID() INTO UUID;
     INSERT INTO school VALUES (UUID,description);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `API_InsertNewSchoolEntity` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewSchoolEntity`(IN `school` VARCHAR(255),IN `entity` VARCHAR(255))
+BEGIN
+    INSERT INTO schoolentity VALUES (school,entity);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1067,50 +1107,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `API_UserExists`(IN type INT(1), IN 
 BEGIN
  DECLARE UserExists INT(1);
  DECLARE EntityExists INT(1);
+ DECLARE UserActive INT(1);
+ DECLARE UserLocked INT(1);
     CASE
-    WHEN type=1 THEN SELECT COUNT(*) FROM user where user.username=username INTO UserExists;SELECT COUNT(*) from student as s where s.studentid=extid INTO EntityExists;SELECT UserExists,EntityExists;
-    WHEN type=2 THEN SELECT COUNT(*) FROM user where user.username=username INTO UserExists;SELECT COUNT(*) from teacher as t where t.teacherid=extid INTO EntityExists;SELECT UserExists,EntityExists;
+    WHEN type=1 THEN SELECT COUNT(*) FROM user where user.username=username INTO UserExists;SELECT COUNT(*) from student as s where s.studentid=extid INTO EntityExists;SELECT locked from user where id=any(select id from student where studentid=extid) INTO UserLocked;SELECT active from user where id=any(select id from student where studentid=extid) INTO UserActive;SELECT UserExists,EntityExists,UserLocked,UserActive;
+    WHEN type=2 THEN SELECT COUNT(*) FROM user where user.username=username INTO UserExists;SELECT COUNT(*) from teacher as t where t.teacherid=extid INTO EntityExists;SELECT locked from user where id=any(select id from teacher where teacherid=extid) INTO UserLocked;SELECT active from user where id=any(select id from teacher where teacherid=extid) INTO UserActive;SELECT UserExists,EntityExists;
     END CASE;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `DEPRACATED_InsertNewProjectRevisionEntity` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `DEPRACATED_InsertNewProjectRevisionEntity`(IN `projectrev` VARCHAR(255),IN `projentity` VARCHAR(255),IN `function` VARCHAR(255),IN `entity` VARCHAR(255))
-BEGIN
-    DECLARE UUID VARCHAR(255);
-    SELECT UUID() INTO UUID;
-    INSERT INTO projectreventity VALUES (projectrev,projentity,function,NOW(),entity);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `DEPRACATED_InsertNewSchoolEntity` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `DEPRACATED_InsertNewSchoolEntity`(IN `school` VARCHAR(255),IN `entity` VARCHAR(255))
-BEGIN
-    INSERT INTO schoolentity VALUES (school,entity);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1150,4 +1152,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-03 12:06:20
+-- Dump completed on 2017-04-03 21:41:49
