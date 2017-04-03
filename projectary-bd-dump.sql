@@ -542,18 +542,20 @@ LOCK TABLES `projectrevlogdoc` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `projectrevmilestones`
+-- Table structure for table `projectrevmilestone`
 --
 
-DROP TABLE IF EXISTS `projectrevmilestones`;
+DROP TABLE IF EXISTS `projectrevmilestone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `projectrevmilestones` (
+CREATE TABLE `projectrevmilestone` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `projectrev` varchar(255) COLLATE utf8_bin NOT NULL,
   `desc` varchar(255) COLLATE utf8_bin NOT NULL,
   `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start` date NOT NULL,
+  `end` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `projectrevmilestones_projectrev_fk` (`projectrev`),
   KEY `projectrevmilestones_createdby_fk` (`createdby`),
@@ -563,12 +565,12 @@ CREATE TABLE `projectrevmilestones` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `projectrevmilestones`
+-- Dumping data for table `projectrevmilestone`
 --
 
-LOCK TABLES `projectrevmilestones` WRITE;
-/*!40000 ALTER TABLE `projectrevmilestones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `projectrevmilestones` ENABLE KEYS */;
+LOCK TABLES `projectrevmilestone` WRITE;
+/*!40000 ALTER TABLE `projectrevmilestone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectrevmilestone` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1148,4 +1150,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-03 12:03:14
+-- Dump completed on 2017-04-03 12:06:20
