@@ -7,8 +7,7 @@ CREATE PROCEDURE API_InsertNewApplication(IN entity VARCHAR(255))
   SELECT UUID() INTO GEUUID;
   SELECT UUID() INTO APPUUID;
   SELECT id FROM function WHERE `desc`="Student" INTO EFUNCUUID;
-  INSERT INTO groupentity VALUES (GEUUID,entity,EFUNCUUID,
-                                  NULL,NOW(),entity,NULL,NULL);
+  INSERT INTO groupentity (id,entity,function,createdin,createdby) VALUES (GEUUID,entity,EFUNCUUID,NOW(),entity);
   INSERT INTO application VALUES (APPUUID,entity,NOW());
   INSERT INTO applicationgroup VALUES (APPUUID,GEUUID,NOW(),entity);
   SELECT APPUUID, GEUUID;
