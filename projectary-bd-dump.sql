@@ -63,7 +63,6 @@ CREATE TABLE `application` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `submitedby` varchar(255) COLLATE utf8_bin NOT NULL,
   `submitedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `group` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `application_entity_fk` (`submitedby`),
   CONSTRAINT `application_entity_fk` FOREIGN KEY (`submitedby`) REFERENCES `entity` (`id`)
@@ -1197,4 +1196,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-15 21:31:31
+-- Dump completed on 2017-04-05 10:26:55
