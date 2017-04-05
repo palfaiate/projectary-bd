@@ -738,11 +738,18 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewApplication`(IN `entity` VARCHAR(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewApplication`(IN entity VARCHAR(255))
 BEGIN
- DECLARE UUID VARCHAR(255);
- SELECT UUID() INTO UUID;
-  INSERT INTO application VALUES (UUID,entity,NOW());
+  DECLARE GEUUID VARCHAR(255);
+  DECLARE APPUUID VARCHAR(255);
+  DECLARE EFUNCUUID VARCHAR(255);
+  SELECT UUID() INTO GEUUID;
+  SELECT UUID() INTO APPUUID;
+  SELECT id FROM function WHERE `desc`="Student" INTO EFUNCUUID;
+  INSERT INTO groupentity (id,entity,function,createdin,createdby) VALUES (GEUUID,entity,EFUNCUUID,NOW(),entity);
+  INSERT INTO application VALUES (APPUUID,entity,NOW());
+  INSERT INTO applicationgroup VALUES (APPUUID,GEUUID,NOW(),entity);
+  SELECT APPUUID, GEUUID;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1196,4 +1203,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-05 10:26:55
+-- Dump completed on 2017-04-05 11:51:29
