@@ -63,7 +63,6 @@ CREATE TABLE `application` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `submitedby` varchar(255) COLLATE utf8_bin NOT NULL,
   `submitedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `group` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `application_entity_fk` (`submitedby`),
   CONSTRAINT `application_entity_fk` FOREIGN KEY (`submitedby`) REFERENCES `entity` (`id`)
@@ -293,6 +292,7 @@ CREATE TABLE `entity` (
 
 LOCK TABLES `entity` WRITE;
 /*!40000 ALTER TABLE `entity` DISABLE KEYS */;
+INSERT INTO `entity` VALUES ('26774d25-1857-11e7-a99b-525400f5614a','a','2017-04-03 10:20:24');
 /*!40000 ALTER TABLE `entity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -365,9 +365,9 @@ CREATE TABLE `groupentity` (
   `approvedin` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`,`entity`,`function`),
   KEY `groupentity_entity_fk` (`entity`),
-  KEY `groupentity_function_fk` (`function`),
   KEY `groupentity_approval_fk` (`approvedby`),
   KEY `groupentity_createdby_fk` (`createdby`),
+  KEY `groupentity_function_fk` (`function`),
   CONSTRAINT `groupentity_approval_fk` FOREIGN KEY (`approvedby`) REFERENCES `entity` (`id`),
   CONSTRAINT `groupentity_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
   CONSTRAINT `groupentity_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`),
@@ -396,6 +396,8 @@ CREATE TABLE `project` (
   `application` varchar(255) COLLATE utf8_bin NOT NULL,
   `approvedby` varchar(255) COLLATE utf8_bin NOT NULL,
   `approvedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `project_application_uindex` (`application`),
   KEY `project_entity_fk` (`approvedby`),
@@ -487,15 +489,15 @@ DROP TABLE IF EXISTS `projectrevlog`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `projectrevlog` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `project` varchar(255) COLLATE utf8_bin NOT NULL,
+  `projectrev` varchar(255) COLLATE utf8_bin NOT NULL,
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
   `desc` longtext COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `projectlogs_projrev_fk` (`project`),
+  KEY `projectlogs_projrev_fk` (`projectrev`),
   KEY `projectlogs_entity_fk` (`createdby`),
   CONSTRAINT `projectlogs_entity_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
-  CONSTRAINT `projectlogs_projrev_fk` FOREIGN KEY (`project`) REFERENCES `projectrev` (`id`)
+  CONSTRAINT `projectlogs_projrev_fk` FOREIGN KEY (`projectrev`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table to Register Project Logs';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -518,7 +520,6 @@ DROP TABLE IF EXISTS `projectrevlogdoc`;
 CREATE TABLE `projectrevlogdoc` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `projectrevlog` varchar(255) COLLATE utf8_bin NOT NULL,
-  `doc` longblob,
   `url` longtext COLLATE utf8_bin,
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -537,6 +538,39 @@ CREATE TABLE `projectrevlogdoc` (
 LOCK TABLES `projectrevlogdoc` WRITE;
 /*!40000 ALTER TABLE `projectrevlogdoc` DISABLE KEYS */;
 /*!40000 ALTER TABLE `projectrevlogdoc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `projectrevmilestone`
+--
+
+DROP TABLE IF EXISTS `projectrevmilestone`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projectrevmilestone` (
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `projectrev` varchar(255) COLLATE utf8_bin NOT NULL,
+  `desc` varchar(255) COLLATE utf8_bin NOT NULL,
+  `createdby` varchar(255) COLLATE utf8_bin NOT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start` date NOT NULL,
+  `end` date NOT NULL,
+  `perc` decimal(10,0) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `projectrevmilestones_projectrev_fk` (`projectrev`),
+  KEY `projectrevmilestones_createdby_fk` (`createdby`),
+  CONSTRAINT `projectrevmilestones_createdby_fk` FOREIGN KEY (`createdby`) REFERENCES `entity` (`id`),
+  CONSTRAINT `projectrevmilestones_projectrev_fk` FOREIGN KEY (`projectrev`) REFERENCES `projectrev` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projectrevmilestone`
+--
+
+LOCK TABLES `projectrevmilestone` WRITE;
+/*!40000 ALTER TABLE `projectrevmilestone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectrevmilestone` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -611,6 +645,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
+INSERT INTO `student` VALUES ('26774d25-1857-11e7-a99b-525400f5614a','123456');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -640,13 +675,13 @@ LOCK TABLES `teacher` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `users`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
+CREATE TABLE `user` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `username` varchar(255) COLLATE utf8_bin NOT NULL,
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -654,22 +689,21 @@ CREATE TABLE `users` (
   `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `locked` tinyint(1) DEFAULT '0',
   `active` tinyint(1) DEFAULT '0',
-  `entity` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_uindex` (`username`),
   UNIQUE KEY `users_email_uindex` (`email`),
-  KEY `users_entity_fk` (`entity`),
-  CONSTRAINT `users_entity_fk` FOREIGN KEY (`entity`) REFERENCES `entity` (`id`)
+  CONSTRAINT `users_entity_fk` FOREIGN KEY (`id`) REFERENCES `entity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('26774d25-1857-11e7-a99b-525400f5614a','username','a','email','2017-04-15 20:30:11',0,0);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -704,11 +738,18 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewApplication`(IN `entity` VARCHAR(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewApplication`(IN entity VARCHAR(255))
 BEGIN
- DECLARE UUID VARCHAR(255);
- SELECT UUID() INTO UUID;
-  INSERT INTO application VALUES (UUID,entity,NOW());
+  DECLARE GEUUID VARCHAR(255);
+  DECLARE APPUUID VARCHAR(255);
+  DECLARE EFUNCUUID VARCHAR(255);
+  SELECT UUID() INTO GEUUID;
+  SELECT UUID() INTO APPUUID;
+  SELECT id FROM function WHERE `desc`="Student" INTO EFUNCUUID;
+  INSERT INTO groupentity (id,entity,function,createdin,createdby) VALUES (GEUUID,entity,EFUNCUUID,NOW(),entity);
+  INSERT INTO application VALUES (APPUUID,entity,NOW());
+  INSERT INTO applicationgroup VALUES (APPUUID,GEUUID,NOW(),entity);
+  SELECT APPUUID, GEUUID;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -818,6 +859,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `API_InsertNewProjectRevisionEntity` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewProjectRevisionEntity`(IN `projectrev` VARCHAR(255),IN `projentity` VARCHAR(255),IN `function` VARCHAR(255),IN `entity` VARCHAR(255))
+BEGIN
+    DECLARE UUID VARCHAR(255);
+    SELECT UUID() INTO UUID;
+    INSERT INTO projectreventity VALUES (projectrev,projentity,function,NOW(),entity);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `API_InsertNewProjectRevisionLog` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -881,6 +943,25 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `API_InsertNewSchoolEntity` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewSchoolEntity`(IN `school` VARCHAR(255),IN `entity` VARCHAR(255))
+BEGIN
+    INSERT INTO schoolentity VALUES (school,entity);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `API_InsertNewUser` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -892,7 +973,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `API_InsertNewUser`(IN username VARCHAR(255), IN password VARCHAR(255), IN name VARCHAR(255),
-                               IN email    VARCHAR(255), IN type INT(1), IN extid VARCHAR(255))
+                                   IN email    VARCHAR(255), IN type INT(1), IN extid VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
     CASE
@@ -900,7 +981,7 @@ BEGIN
     WHEN type=2 THEN CALL InsertNewEntity(name,type,extid);SELECT id from teacher where teacherid=extid INTO UUID;
     END CASE;
 
-    INSERT INTO users (id,username,password,email,createdin,locked,active,entity)VALUES(UUID,username,password,email,NOW(),0,0,UUID);
+    INSERT INTO user (id,username,password,email,createdin,locked,active)VALUES(UUID,username,password,email,NOW(),0,0);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1019,6 +1100,36 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `API_UserExists` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `API_UserExists`(IN type INT(1), IN username VARCHAR(255), IN extid VARCHAR(255))
+BEGIN
+ DECLARE UserExists INT(1);
+ DECLARE EntityExists INT(1);
+ DECLARE UserActive INT(1);
+ DECLARE UserLocked INT(1);
+ SET UserExists :=0;
+ SET EntityExists :=0;
+ SET UserActive :=0;
+ SET UserLocked :=0;
+    CASE
+    WHEN type=1 THEN SELECT COUNT(id) FROM user where user.username=username INTO UserExists;SELECT COUNT(id) from student as s where s.studentid=extid INTO EntityExists;SELECT locked from user where id=any(select id from student where studentid=extid) or username=username INTO UserLocked;SELECT active from user where id=any(select id from student where studentid=extid) or username=username INTO UserActive;SELECT UserExists,EntityExists,UserLocked,UserActive;
+    WHEN type=2 THEN SELECT COUNT(id) FROM user where user.username=username INTO UserExists;SELECT COUNT(id) from teacher as t where t.teacherid=extid INTO EntityExists;SELECT locked from user where id=any(select id from teacher where teacherid=extid) or username=username INTO UserLocked;SELECT active from user where id=any(select id from teacher where teacherid=extid) or username=username INTO UserActive;SELECT UserExists,EntityExists,UserLocked,UserActive;
+    END CASE;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `DEPRACATED_InsertNewProjectRevisionEntity` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1092,4 +1203,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-30  0:18:30
+-- Dump completed on 2017-04-05 11:51:29
