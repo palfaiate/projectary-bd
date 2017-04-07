@@ -22,49 +22,49 @@ td { padding:1; }
 <h1>groupentity</h1>
 Table<br>
 Database: projectary <hr size=1>
-<pre>Table Used to Create Groups of Entities</pre><hr size=1>
+	<p>Esta tabela é responsável por agrupar vários entrevenientes alunos ou professores associados a um projecto.</p>
 <table class='TABCOL'>
 <tr class='tableHeader'>
 <td>Name</td><td>Data Type</td><td>Comment</td></tr>
 <tr>
 <td>id</td>
 <td>id : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Chave primária desta tabela.</td>
 </tr>
 <tr>
 <td>entity</td>
 <td>entity : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Chave forasteira "groupentity_entity_fk" que relaciona um grupo a uma entidade.</td>
 </tr>
 <tr>
 <td>function</td>
 <td>function : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Chave forasteira "group_function_fk" que relaciona um determinado membro do grupo a uma função desempenhada.</td>
 </tr>
 <tr>
 <td>grade</td>
 <td>grade : decimal (10,0) : <span style='color:#008000'>NULL</span></td>
-<td></td>
+<td>Nota decimal que está atribuida a um determinado grupo de pessoas envolvidas num projecto.</td>
 </tr>
 <tr>
 <td>createdin</td>
 <td>createdin : timestamp : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Registo temporal que indica quado a tabela foi criada.</td>
 </tr>
 <tr>
 <td>createdby</td>
 <td>createdby : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Chave forasteira "groupentity_createdby_fk" que indica que entidade.</td>
 </tr>
 <tr>
 <td>approvedby</td>
 <td>approvedby : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>NULL</span></td>
-<td></td>
+<td>Chave forasteira "groupentity_approval_fk" que indica quem aprovou este grupo. (Um teacher com desempenhado uma function de admin).</td>
 </tr>
 <tr>
 <td>approvedin</td>
 <td>approvedin : timestamp : <span style='color:#008000'>NULL</span></td>
-<td></td>
+<td>Registo temporal que indica quando foi aprovada a tabela.</td>
 </tr>
 </table><h2>Sheet</h2>
 <a href='sheet_Projectary.html' target='main'>Projectary</a>
