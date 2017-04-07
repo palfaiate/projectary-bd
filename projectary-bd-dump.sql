@@ -231,7 +231,10 @@ CREATE TABLE `user` (
   `email` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `phonenumber` varchar(14) COLLATE utf8_bin DEFAULT NULL,
   `isadmin` tinyint(1) NOT NULL DEFAULT '0',
+  `password` varchar(255) COLLATE utf8_bin NOT NULL,
+  `username` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `user_username_uindex` (`username`),
   UNIQUE KEY `users_external_id_uindex` (`external_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -669,46 +672,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `DEPRACATED_InsertNewProjectRevisionEntity` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `DEPRACATED_InsertNewProjectRevisionEntity`(IN `projectrev` VARCHAR(255),IN `projentity` VARCHAR(255),IN `function` VARCHAR(255),IN `entity` VARCHAR(255))
-BEGIN
-    DECLARE UUID VARCHAR(255);
-    SELECT UUID() INTO UUID;
-    INSERT INTO projectreventity VALUES (projectrev,projentity,function,NOW(),entity);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `DEPRACATED_InsertNewSchoolEntity` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `DEPRACATED_InsertNewSchoolEntity`(IN `school` VARCHAR(255),IN `entity` VARCHAR(255))
-BEGIN
-    INSERT INTO schoolentity VALUES (school,entity);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `InsertNewEntity` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -742,4 +705,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-07 21:35:59
+-- Dump completed on 2017-04-07 21:58:48
