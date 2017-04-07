@@ -20,7 +20,7 @@ td { padding:1; }
  &nbsp; <a href='names-0.html' target='main'>Index</a>
 </tr></td></table>
 <h1>users</h1>
-Table<br>
+Tabela relativa ao armazenamento de utilizadores incritos na plataforma.<br>
 Database: projectary <hr size=1>
 <table class='TABCOL'>
 <tr class='tableHeader'>
@@ -28,42 +28,42 @@ Database: projectary <hr size=1>
 <tr>
 <td>id</td>
 <td>id : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Chave primária da tabela.</td>
 </tr>
 <tr>
 <td>username</td>
 <td>username : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Nome de utilizador único.</td>
 </tr>
 <tr>
 <td>password</td>
 <td>password : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Password de validação escolhida pelo utilizador.</td>
 </tr>
 <tr>
 <td>email</td>
 <td>email : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Email de contacto do utilizador.</td>
 </tr>
 <tr>
 <td>createdin</td>
 <td>createdin : timestamp : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Registo temporal que indica quado a tabela foi criada.</td>
 </tr>
 <tr>
 <td>locked</td>
 <td>locked : tinyint (1) : <span style='color:#008000'>NULL</span></td>
-<td></td>
+<td>Indica se o utilizador esta bloqueado por insereção de password incorrecta.</td>
 </tr>
 <tr>
 <td>active</td>
 <td>active : tinyint (1) : <span style='color:#008000'>NULL</span></td>
-<td></td>
+<td>Indica se esta entidade já foi activa.</td>
 </tr>
 <tr>
 <td>entity</td>
 <td>entity : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>NULL</span></td>
-<td></td>
+<td>Chave forasteira "users_entity_fk" que indica com entidade este utilizador se relaciona.</td>
 </tr>
 </table><h2>Sheet</h2>
 <a href='sheet_Projectary.html' target='main'>Projectary</a>

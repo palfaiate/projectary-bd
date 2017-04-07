@@ -20,7 +20,8 @@ td { padding:1; }
  &nbsp; <a href='names-0.html' target='main'>Index</a>
 </tr></td></table>
 <h1>function</h1>
-Table<br>
+Tabela usada para descriminar a função de um determinado utilizador. Um utilizador pode ser estudante ou professor. Mas enquanto estudante ou professor pode desempenhar diferentes 
+funcções dentro de um mesmo projecto. Por exemplo, um professor num dado projecto pode ser: orientador, responsável ou apenas colaborador.<br>
 Database: projectary <hr size=1>
 <table class='TABCOL'>
 <tr class='tableHeader'>
@@ -28,22 +29,22 @@ Database: projectary <hr size=1>
 <tr>
 <td>id</td>
 <td>id : varchar (255) : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Chave primária na tabela function.</td>
 </tr>
 <tr>
 <td>desc</td>
 <td>desc : varchar (255) : <span style='color:#008000'>NULL</span></td>
-<td></td>
+<td>Descrição da função a ser desempenhada.</td>
 </tr>
 <tr>
 <td>createdin</td>
 <td>createdin : timestamp : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Registo temporal que indica quado a tabela foi criada.</td>
 </tr>
 <tr>
 <td>createdby</td>
 <td>createdby : varchar (255) <span style='color:#ab00ab'>*</span> : <span style='color:#008000'>Not NULL</span></td>
-<td></td>
+<td>Chave forasteira "function_entity_fk" usada na tabela "groupentity" serve para defenir que entidade criou esta tabela.</td>
 </tr>
 </table><h2>Sheet</h2>
 <a href='sheet_Projectary.html' target='main'>Projectary</a>
