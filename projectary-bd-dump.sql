@@ -19,9 +19,9 @@
 -- Current Database: `projectary`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `projectary` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `projectary-master` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
 
-USE `projectary`;
+USE `projectary-master`;
 
 --
 -- Table structure for table `application`
