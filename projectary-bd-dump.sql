@@ -1,6 +1,6 @@
 -- MySQL dump 10.16  Distrib 10.1.22-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: projectary
+-- Host: localhost    Database: projectary-master
 -- ------------------------------------------------------
 -- Server version	10.1.22-MariaDB-1~xenial
 
@@ -16,7 +16,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `projectary`
+-- Current Database: `projectary-master`
 --
 
 CREATE DATABASE /*!32312 IF NOT EXISTS*/ `projectary-master` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
@@ -31,10 +31,14 @@ DROP TABLE IF EXISTS `application`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `application` (
-  `group` varchar(255) COLLATE utf8_bin NOT NULL,
-  `project` varchar(255) COLLATE utf8_bin NOT NULL,
-  `approvedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`group`,`project`)
+  `gid` varchar(255) COLLATE utf8_bin NOT NULL,
+  `pid` varchar(255) COLLATE utf8_bin NOT NULL,
+  `submitedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `approvedin` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`gid`,`pid`),
+  KEY `application_project_fk` (`pid`),
+  CONSTRAINT `application_group_fk` FOREIGN KEY (`gid`) REFERENCES `group` (`id`),
+  CONSTRAINT `application_project_fk` FOREIGN KEY (`pid`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -48,6 +52,30 @@ LOCK TABLES `application` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `attribute`
+--
+
+DROP TABLE IF EXISTS `attribute`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attribute` (
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
+  `desc` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `createdin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Attributes Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `attribute`
+--
+
+LOCK TABLES `attribute` WRITE;
+/*!40000 ALTER TABLE `attribute` DISABLE KEYS */;
+/*!40000 ALTER TABLE `attribute` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `course`
 --
 
@@ -56,8 +84,11 @@ DROP TABLE IF EXISTS `course`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `course` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `desc` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `desc` varchar(255) COLLATE utf8_bin NOT NULL,
+  `sid` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_school_fk` (`sid`),
+  CONSTRAINT `course_school_fk` FOREIGN KEY (`sid`) REFERENCES `school` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -79,7 +110,7 @@ DROP TABLE IF EXISTS `group`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `group` (
   `id` varchar(255) COLLATE utf8_bin NOT NULL,
-  `desc` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `desc` varchar(255) COLLATE utf8_bin NOT NULL,
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -102,11 +133,14 @@ DROP TABLE IF EXISTS `groupuser`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `groupuser` (
-  `group` varchar(255) COLLATE utf8_bin NOT NULL,
-  `user` varchar(255) COLLATE utf8_bin NOT NULL,
+  `gid` varchar(255) COLLATE utf8_bin NOT NULL,
+  `uid` varchar(255) COLLATE utf8_bin NOT NULL,
   `grade` decimal(10,0) NOT NULL DEFAULT '0',
   `approvedin` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`group`,`user`)
+  PRIMARY KEY (`gid`,`uid`),
+  KEY `groupuser_user_fk` (`uid`),
+  CONSTRAINT `groupuser_group_fk` FOREIGN KEY (`gid`) REFERENCES `group` (`id`),
+  CONSTRAINT `groupuser_user_fk` FOREIGN KEY (`uid`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -127,11 +161,16 @@ DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `project` (
-  `id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `approvedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `YEAR` year(4) NOT NULL,
-  `course` varchar(255) COLLATE utf8_bin NOT NULL,
-  `finaldoc` varchar(255) COLLATE utf8_bin DEFAULT NULL
+  `cid` varchar(255) COLLATE utf8_bin NOT NULL,
+  `ptbid` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project_ptb_fk` (`ptbid`),
+  KEY `project_course_fk` (`cid`),
+  CONSTRAINT `project_course_fk` FOREIGN KEY (`cid`) REFERENCES `course` (`id`),
+  CONSTRAINT `project_ptb_fk` FOREIGN KEY (`ptbid`) REFERENCES `projtobe` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -145,6 +184,33 @@ LOCK TABLES `project` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `projectattribute`
+--
+
+DROP TABLE IF EXISTS `projectattribute`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projectattribute` (
+  `pid` varchar(255) COLLATE utf8_bin NOT NULL,
+  `aid` varchar(255) COLLATE utf8_bin NOT NULL,
+  `value` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`pid`,`aid`),
+  KEY `projectattributes_attributes_fk` (`aid`),
+  CONSTRAINT `projectattributes_attributes_fk` FOREIGN KEY (`aid`) REFERENCES `attribute` (`id`),
+  CONSTRAINT `projectattributes_project_fk` FOREIGN KEY (`pid`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projectattribute`
+--
+
+LOCK TABLES `projectattribute` WRITE;
+/*!40000 ALTER TABLE `projectattribute` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectattribute` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `projtobe`
 --
 
@@ -152,12 +218,13 @@ DROP TABLE IF EXISTS `projtobe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `projtobe` (
-  `project` varchar(255) COLLATE utf8_bin NOT NULL,
+  `id` varchar(255) COLLATE utf8_bin NOT NULL,
   `desc` varchar(255) COLLATE utf8_bin NOT NULL,
-  `group` varchar(255) COLLATE utf8_bin NOT NULL,
+  `gid` varchar(255) COLLATE utf8_bin NOT NULL,
   `submitedin` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`project`),
-  UNIQUE KEY `projtobe_group_uindex` (`group`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `projtobe_gid_uindex` (`gid`),
+  CONSTRAINT `projtobe_group_fk` FOREIGN KEY (`gid`) REFERENCES `group` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -238,7 +305,9 @@ CREATE TABLE `user` (
   `active` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_username_uindex` (`username`),
-  UNIQUE KEY `users_external_id_uindex` (`external_id`)
+  UNIQUE KEY `users_external_id_uindex` (`external_id`),
+  KEY `user_type_fk` (`type`),
+  CONSTRAINT `user_type_fk` FOREIGN KEY (`type`) REFERENCES `type` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -252,7 +321,22 @@ LOCK TABLES `user` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'projectary'
+-- Temporary table structure for view `vw_projectattributes`
+--
+
+DROP TABLE IF EXISTS `vw_projectattributes`;
+/*!50001 DROP VIEW IF EXISTS `vw_projectattributes`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `vw_projectattributes` (
+  `pid` tinyint NOT NULL,
+  `desc` tinyint NOT NULL,
+  `value` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping routines for database 'projectary-master'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `API_InsertNewAdmin` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -698,6 +782,31 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Current Database: `projectary-master`
+--
+
+USE `projectary-master`;
+
+--
+-- Final view structure for view `vw_projectattributes`
+--
+
+/*!50001 DROP TABLE IF EXISTS `vw_projectattributes`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_projectattributes`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_projectattributes` AS select `p`.`id` AS `pid`,`a`.`desc` AS `desc`,`pa`.`value` AS `value` from ((`project` `p` join `projectattribute` `pa`) join `attribute` `a`) where ((`p`.`id` = `pa`.`pid`) and (`pa`.`aid` = `a`.`id`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -708,4 +817,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-10  9:39:41
+-- Dump completed on 2017-04-10 12:12:20
