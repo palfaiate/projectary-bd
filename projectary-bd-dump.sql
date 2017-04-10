@@ -130,7 +130,8 @@ CREATE TABLE `project` (
   `id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `approvedin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `YEAR` year(4) NOT NULL,
-  `course` varchar(255) COLLATE utf8_bin NOT NULL
+  `course` varchar(255) COLLATE utf8_bin NOT NULL,
+  `finaldoc` varchar(255) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -233,6 +234,8 @@ CREATE TABLE `user` (
   `isadmin` tinyint(1) NOT NULL DEFAULT '0',
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
   `username` varchar(255) COLLATE utf8_bin NOT NULL,
+  `locked` tinyint(1) DEFAULT '0',
+  `active` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_username_uindex` (`username`),
   UNIQUE KEY `users_external_id_uindex` (`external_id`)
@@ -672,7 +675,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `InsertNewEntity` */;
+/*!50003 DROP PROCEDURE IF EXISTS `InsertNewUser` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -682,7 +685,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewEntity`(IN name VARCHAR(255), IN type INT, IN extid VARCHAR(255))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertNewUser`(IN name VARCHAR(255), IN type INT, IN extid VARCHAR(255))
 BEGIN
  DECLARE UUID VARCHAR(255);
 CASE
@@ -705,4 +708,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-07 21:58:48
+-- Dump completed on 2017-04-10  9:39:41
