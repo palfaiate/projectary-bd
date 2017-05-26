@@ -157,7 +157,7 @@ DROP TABLE IF EXISTS `groupuser`;
 CREATE TABLE `groupuser` (
   `groupid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `isadmin` tinyint(1) DEFAULT NULL,
+  `owner` tinyint(1) DEFAULT NULL,
   `grade` decimal(10,0) NOT NULL DEFAULT '0',
   `approvedin` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`groupid`,`userid`)
@@ -315,13 +315,14 @@ CREATE TABLE `user` (
   `email` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `phonenumber` varchar(14) COLLATE utf8_bin DEFAULT NULL,
   `isadmin` tinyint(1) NOT NULL DEFAULT '0',
+  `token` varchar(5000) COLLATE utf8_bin DEFAULT NULL,
   `password` varchar(255) COLLATE utf8_bin NOT NULL,
   `locked` tinyint(1) DEFAULT '0',
   `active` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_external_id_uindex` (`external_id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -330,7 +331,6 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Aluno testes','default_photo.png','1234',1,'1@ipt.pt','1234567789',0,'123qwe',0,0),(4,'Aluno testes','default_photo.png','12345',1,'2@ipt.pt','1234567789',0,'123qwe',0,0),(5,'Aluno testes','default_photo.png','123456',1,'3@ipt.pt','1234567789',0,'123qwe',0,0),(7,'Aluno testes','default_photo.png','12345678',1,'5@ipt.pt','1234567789',0,'123qwe',0,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -912,4 +912,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-05 22:14:22
+-- Dump completed on 2017-05-26 18:35:06
